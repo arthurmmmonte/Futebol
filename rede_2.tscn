@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://fbavdh45prmq"]
+
+[ext_resource type="Script" path="res://rede_2.gd" id="1_m1bds"]
+[ext_resource type="Texture2D" uid="uid://ccuda8735ye8t" path="res://textures/rede.png" id="2_upikr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t7nrv"]
+size = Vector2(66, 258)
+
+[node name="Rede2" type="Area2D"]
+script = ExtResource("1_m1bds")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_upikr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_t7nrv")

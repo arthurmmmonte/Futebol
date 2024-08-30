@@ -1,0 +1,75 @@
+[gd_scene load_steps=14 format=3 uid="uid://dbhexa8vuejgp"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_fm15j"]
+[ext_resource type="PackedScene" uid="uid://ccyj5q4ulnmmu" path="res://player_1.tscn" id="1_vpt2m"]
+[ext_resource type="PackedScene" uid="uid://c41s068u0m8ok" path="res://player_2.tscn" id="2_ob0hm"]
+[ext_resource type="PackedScene" uid="uid://6w1suwhjocd6" path="res://ball.tscn" id="3_f5h7j"]
+[ext_resource type="PackedScene" uid="uid://bsfhtyjywscpo" path="res://rede_1.tscn" id="4_c3s7k"]
+[ext_resource type="PackedScene" uid="uid://fbavdh45prmq" path="res://rede_2.tscn" id="6_k4au3"]
+[ext_resource type="Texture2D" uid="uid://dehyr0un8wqhl" path="res://textures/pixel.png" id="7_4tb1w"]
+[ext_resource type="Texture2D" uid="uid://dcjt2vix3vbqw" path="res://textures/altura.png" id="8_ab3xc"]
+[ext_resource type="Texture2D" uid="uid://evprq8d3afye" path="res://textures/largura.png" id="9_1n8u8"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0d04c"]
+texture = ExtResource("7_4tb1w")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jsd4a"]
+texture = ExtResource("8_ab3xc")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cetta"]
+texture = ExtResource("9_1n8u8")
+
+[sub_resource type="TileSet" id="TileSet_5u42s"]
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_0d04c")
+sources/2 = SubResource("TileSetAtlasSource_jsd4a")
+sources/3 = SubResource("TileSetAtlasSource_cetta")
+
+[node name="Main" type="Node"]
+script = ExtResource("1_fm15j")
+ball_scene = ExtResource("3_f5h7j")
+
+[node name="Player1" parent="." instance=ExtResource("1_vpt2m")]
+position = Vector2(256, 360)
+
+[node name="Player2" parent="." instance=ExtResource("2_ob0hm")]
+position = Vector2(1024, 360)
+
+[node name="Ball" parent="." instance=ExtResource("3_f5h7j")]
+position = Vector2(640, 360)
+
+[node name="Rede1" parent="." instance=ExtResource("4_c3s7k")]
+position = Vector2(32, 360)
+
+[node name="Rede2" parent="." instance=ExtResource("6_k4au3")]
+position = Vector2(1248, 360)
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Marker1" type="Marker2D" parent="."]
+position = Vector2(256, 360)
+
+[node name="Marker2" type="Marker2D" parent="."]
+position = Vector2(1024, 360)
+
+[node name="MarkerBall" type="Marker2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="MarkerRede1" type="Marker2D" parent="."]
+position = Vector2(32, 360)
+
+[node name="MarkerRede2" type="Marker2D" parent="."]
+position = Vector2(1248, 360)
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_5u42s")
+format = 2
+
+[connection signal="goal_scored" from="Rede1" to="." method="_on_rede_goal_scored"]
+[connection signal="goal_scored" from="Rede2" to="." method="_on_rede_2_goal_scored"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
