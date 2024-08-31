@@ -8,7 +8,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	position = position.clamp(Vector2.ZERO, screen_size)
+	pass
 
 func start(pos):
 	position = pos

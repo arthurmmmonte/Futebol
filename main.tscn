@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dbhexa8vuejgp"]
+[gd_scene load_steps=15 format=3 uid="uid://dbhexa8vuejgp"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_fm15j"]
 [ext_resource type="PackedScene" uid="uid://ccyj5q4ulnmmu" path="res://player_1.tscn" id="1_vpt2m"]
@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://bgi01me8p8xnc" path="res://textures/trave.png" id="7_opx5t"]
 [ext_resource type="Texture2D" uid="uid://dcjt2vix3vbqw" path="res://textures/altura.png" id="8_ab3xc"]
 [ext_resource type="Texture2D" uid="uid://evprq8d3afye" path="res://textures/largura.png" id="9_1n8u8"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m68on"]
+friction = 0.95
+bounce = 0.75
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x6qis"]
 texture = ExtResource("7_opx5t")
@@ -536,8 +540,8 @@ texture = ExtResource("9_1n8u8")
 79:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_5u42s"]
-physics_layer_0/collision_layer = 255
-physics_layer_0/collision_mask = 255
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 2
 sources/6 = SubResource("TileSetAtlasSource_x6qis")
 sources/7 = SubResource("TileSetAtlasSource_p53n0")
 sources/8 = SubResource("TileSetAtlasSource_k5mr3")
@@ -548,12 +552,19 @@ ball_scene = ExtResource("3_f5h7j")
 
 [node name="Player1" parent="." instance=ExtResource("1_vpt2m")]
 position = Vector2(256, 360)
+collision_layer = 2
+collision_mask = 3
 
 [node name="Player2" parent="." instance=ExtResource("2_ob0hm")]
 position = Vector2(1024, 360)
+collision_layer = 2
+collision_mask = 3
 
 [node name="Ball" parent="." instance=ExtResource("3_f5h7j")]
 position = Vector2(640, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = SubResource("PhysicsMaterial_m68on")
 
 [node name="Rede1" parent="." instance=ExtResource("4_c3s7k")]
 position = Vector2(32, 360)

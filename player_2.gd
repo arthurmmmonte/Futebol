@@ -8,25 +8,17 @@ var team_id = 2
 func _ready():
 	screen_size = get_viewport_rect().size
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var velocity = Vector2.ZERO
+	pass
 
-	if(Input.is_action_pressed("p2_up")):
-		velocity.y -= 1
-	if(Input.is_action_pressed("p2_down")):
-		velocity.y += 1
-	if(Input.is_action_pressed("p2_left")):
-		velocity.x -= 1
-	if(Input.is_action_pressed("p2_right")):
-		velocity.x += 1
+func _physics_process(delta):
+	get_input()
+	move_and_slide()
 
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
-
-	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
+func get_input():
+	var input_dir = Input.get_vector("p2_left", "p2_right", "p2_up", "p2_down")
+	velocity = input_dir * speed
 
 func start(pos):
 	position = pos
