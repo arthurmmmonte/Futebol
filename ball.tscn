@@ -3,8 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://gs87b26oatrw" path="res://textures/bola.png" id="1_6avnn"]
 [ext_resource type="Script" path="res://ball.gd" id="1_eoxx6"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_forw4"]
-radius = 20.2237
+[sub_resource type="CircleShape2D" id="CircleShape2D_fdgk7"]
+radius = 29.0172
 
 [node name="Ball" type="RigidBody2D"]
 gravity_scale = 0.0
@@ -12,8 +12,8 @@ script = ExtResource("1_eoxx6")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("1_6avnn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visibility_layer = 0
-shape = SubResource("CircleShape2D_forw4")
+shape = SubResource("CircleShape2D_fdgk7")
