@@ -578,10 +578,8 @@ collision_layer = 4
 collision_mask = 7
 
 [node name="StartTimer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 0.5
 one_shot = true
-
-[node name="Timer" type="Timer" parent="."]
 
 [node name="Marker1" type="Marker2D" parent="."]
 position = Vector2(256, 360)
@@ -608,5 +606,4 @@ layer_0/tile_data = PackedInt32Array(917504, 6, 0, 917505, 65542, 0, 917506, 131
 [connection signal="body_entered" from="Rede1" to="." method="_on_rede_1_body_entered"]
 [connection signal="body_entered" from="Rede2" to="." method="_on_rede_2_body_entered"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

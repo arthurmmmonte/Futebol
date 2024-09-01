@@ -3,6 +3,9 @@ extends CanvasLayer
 # Notifies 'Main' node that the button has been pressed
 signal start_game
 
+func _ready():
+	update_score(0, 0)
+
 func show_message(text):
 	$Message.text = text
 	$Message.show()
@@ -10,6 +13,8 @@ func show_message(text):
 
 func show_goal(team_id):
 	$Message.text = "Gol do time %d" % [team_id]
+	$Message.show()
+	$MessageTimer.start()
 
 func update_score(score1, score2):
 	$ScoreLabel.text = "%d - %d" % [score1, score2]
@@ -17,9 +22,6 @@ func update_score(score1, score2):
 func show_game_over(team_id):
 	show_message("Fim de Jogo\nTime %d ganhou!" % [team_id])
 	await $MessageTimer.timeout
-	
-	$Message.text = ""
-	$Message.hide()
 	
 	await get_tree().create_timer(1.0).timeout
 	$StartButton.show()

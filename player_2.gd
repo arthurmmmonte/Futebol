@@ -22,5 +22,4 @@ func get_input():
 
 func start(pos):
 	position = pos
-	show()
-	$CollisionShape2D.disabled = false
+	#set_deferred("monitoring", true)
