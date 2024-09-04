@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 var screen_size
+signal ball_hit
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,3 +33,8 @@ func start(pos):
 	sleeping = false
 	
 	call_deferred("set", "freeze", false)
+
+
+func _on_body_entered(body):
+	if(body.name == "Player1" or body.name == "Player2"):
+		ball_hit.emit()

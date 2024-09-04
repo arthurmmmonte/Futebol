@@ -5,6 +5,8 @@ signal start_game
 
 func _ready():
 	update_score(0, 0)
+	$StartButton.hide()
+	start_game.emit()
 
 func show_message(text):
 	$Message.text = text
@@ -24,7 +26,8 @@ func show_game_over(team_id):
 	await $MessageTimer.timeout
 	
 	await get_tree().create_timer(1.0).timeout
-	$StartButton.show()
+	#$StartButton.show()
+	start_game.emit()
 
 func _on_start_button_pressed():
 	$StartButton.hide()

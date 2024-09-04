@@ -1,15 +1,18 @@
-[gd_scene load_steps=16 format=3 uid="uid://dbhexa8vuejgp"]
+[gd_scene load_steps=19 format=3 uid="uid://dbhexa8vuejgp"]
 
-[ext_resource type="Script" path="res://main.gd" id="1_fm15j"]
+[ext_resource type="Script" path="res://main.gd" id="1_qcgbp"]
 [ext_resource type="PackedScene" uid="uid://ccyj5q4ulnmmu" path="res://player_1.tscn" id="1_vpt2m"]
+[ext_resource type="Script" path="res://AIControllerP1.gd" id="1_wyvvw"]
 [ext_resource type="PackedScene" uid="uid://c41s068u0m8ok" path="res://player_2.tscn" id="2_ob0hm"]
 [ext_resource type="PackedScene" uid="uid://6w1suwhjocd6" path="res://ball.tscn" id="3_f5h7j"]
 [ext_resource type="PackedScene" uid="uid://bsfhtyjywscpo" path="res://rede_1.tscn" id="4_c3s7k"]
+[ext_resource type="Script" path="res://AIControllerP2.gd" id="5_56uhg"]
 [ext_resource type="PackedScene" uid="uid://fbavdh45prmq" path="res://rede_2.tscn" id="6_k4au3"]
 [ext_resource type="Texture2D" uid="uid://bgi01me8p8xnc" path="res://textures/trave.png" id="7_opx5t"]
 [ext_resource type="Texture2D" uid="uid://dcjt2vix3vbqw" path="res://textures/altura.png" id="8_ab3xc"]
 [ext_resource type="Texture2D" uid="uid://evprq8d3afye" path="res://textures/largura.png" id="9_1n8u8"]
 [ext_resource type="PackedScene" uid="uid://dlo04cea5ijx0" path="res://hud.tscn" id="10_0beb0"]
+[ext_resource type="Script" path="res://addons/godot_rl_agents/sync.gd" id="11_v22tr"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m68on"]
 friction = 0.95
@@ -548,18 +551,23 @@ sources/7 = SubResource("TileSetAtlasSource_p53n0")
 sources/8 = SubResource("TileSetAtlasSource_k5mr3")
 
 [node name="Main" type="Node"]
-script = ExtResource("1_fm15j")
-ball_scene = ExtResource("3_f5h7j")
+script = ExtResource("1_qcgbp")
 
 [node name="Player1" parent="." instance=ExtResource("1_vpt2m")]
 position = Vector2(256, 360)
 collision_layer = 2
 collision_mask = 3
 
+[node name="AIControllerP1" type="Node2D" parent="Player1"]
+script = ExtResource("1_wyvvw")
+
 [node name="Player2" parent="." instance=ExtResource("2_ob0hm")]
 position = Vector2(1024, 360)
 collision_layer = 2
 collision_mask = 3
+
+[node name="AIControllerP2" type="Node2D" parent="Player2"]
+script = ExtResource("5_56uhg")
 
 [node name="Ball" parent="." instance=ExtResource("3_f5h7j")]
 position = Vector2(640, 360)
@@ -579,6 +587,11 @@ collision_mask = 7
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 0.5
+one_shot = true
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 180.0
 one_shot = true
 
 [node name="Marker1" type="Marker2D" parent="."]
@@ -603,7 +616,19 @@ layer_0/tile_data = PackedInt32Array(917504, 6, 0, 917505, 65542, 0, 917506, 131
 
 [node name="HUD" parent="." instance=ExtResource("10_0beb0")]
 
+[node name="Sync" type="Node" parent="."]
+script = ExtResource("11_v22tr")
+speed_up = 100.0
+
+[connection signal="fim" from="." to="Player1" method="_on_main_fim"]
+[connection signal="fim" from="." to="Player2" method="_on_main_fim"]
+[connection signal="timeout" from="." to="Player1" method="_on_main_timeout"]
+[connection signal="timeout" from="." to="Player2" method="_on_main_timeout"]
+[connection signal="ball_hit" from="Ball" to="." method="_on_ball_ball_hit"]
+[connection signal="ball_hit" from="Ball" to="Player1" method="_on_ball_ball_hit"]
+[connection signal="ball_hit" from="Ball" to="Player2" method="_on_ball_ball_hit"]
 [connection signal="body_entered" from="Rede1" to="." method="_on_rede_1_body_entered"]
 [connection signal="body_entered" from="Rede2" to="." method="_on_rede_2_body_entered"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cchxel4of3047"]
+
+[ext_resource type="Script" path="res://batch_env.gd" id="1_7jb1d"]
+[ext_resource type="Script" path="res://addons/godot_rl_agents/sync.gd" id="2_ric2t"]
+
+[node name="BatchEnv" type="Node"]
+script = ExtResource("1_7jb1d")
+
+[node name="Sync" type="Node" parent="."]
+script = ExtResource("2_ric2t")
+speed_up = 100.0
