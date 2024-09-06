@@ -3,11 +3,14 @@ extends AIController2D
 @onready var ball: RigidBody2D = $"../../Ball"
 @onready var rede1: Area2D = $"../../Rede1"
 @onready var rede2: Area2D = $"../../Rede2"
+@onready var player_1: CharacterBody2D = $"../../Player1"
 
 var move = Vector2.ZERO
 
 func get_obs() -> Dictionary:
 	var obs := [
+		player_1.position.x,
+		player_1.position.y,
 		ball.position.x,
 		ball.position.y,
 		rede1.position.x,

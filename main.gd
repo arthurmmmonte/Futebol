@@ -7,6 +7,7 @@ signal gol1
 signal gol2
 signal fim
 signal timeout
+signal borda_entrou
 
 #@export var ball_scene: PackedScene
 #var ball_instance: RigidBody2D
@@ -46,8 +47,6 @@ func unfreeze_all():
 func rede1_goal_scored():
 	freeze_all()
 	score2 += 1
-	#ai_controller1.reward -= 5.0
-	#ai_controller2.reward += 5.0
 	$HUD.show_goal(2)
 	$HUD.update_score(score1, score2)
 	await $HUD/MessageTimer.timeout
@@ -57,8 +56,6 @@ func rede1_goal_scored():
 func rede2_goal_scored():
 	freeze_all()
 	score1 += 1
-	#ai_controller1.reward += 5.0
-	#ai_controller2.reward -= 5.0
 	$HUD.show_goal(1)
 	$HUD.update_score(score1, score2)
 	await $HUD/MessageTimer.timeout
@@ -68,7 +65,6 @@ func rede2_goal_scored():
 func new_round():
 	#$Player1.start($Marker1.position)
 	#$Player2.start($Marker2.position)
-	
 	$Player1.call_deferred("start", $Marker1.position)
 	$Player2.call_deferred("start", $Marker2.position)
 	
@@ -79,7 +75,6 @@ func new_round():
 func new_game():
 	#$Player1.start($Marker1.position)
 	#$Player2.start($Marker2.position)
-	
 	$Player1.call_deferred("start", $Marker1.position)
 	$Player2.call_deferred("start", $Marker2.position)
 	
@@ -116,3 +111,10 @@ func _on_timer_timeout():
 
 func _on_ball_ball_hit():
 	$Timer.start()
+	print("Resetou")
+
+
+func _on_area_2d_body_entered(body):
+	print("Entered: ", body.name)
+	if body.name == "Player1" or body.name == "Player2":
+		borda_entrou.emit()

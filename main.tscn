@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://dbhexa8vuejgp"]
+[gd_scene load_steps=24 format=3 uid="uid://dbhexa8vuejgp"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_qcgbp"]
 [ext_resource type="PackedScene" uid="uid://ccyj5q4ulnmmu" path="res://player_1.tscn" id="1_vpt2m"]
 [ext_resource type="Script" path="res://AIControllerP1.gd" id="1_wyvvw"]
 [ext_resource type="PackedScene" uid="uid://c41s068u0m8ok" path="res://player_2.tscn" id="2_ob0hm"]
 [ext_resource type="PackedScene" uid="uid://6w1suwhjocd6" path="res://ball.tscn" id="3_f5h7j"]
+[ext_resource type="Script" path="res://addons/godot_rl_agents/sensors/sensors_2d/RaycastSensor2D.gd" id="4_2l7kb"]
 [ext_resource type="PackedScene" uid="uid://bsfhtyjywscpo" path="res://rede_1.tscn" id="4_c3s7k"]
 [ext_resource type="Script" path="res://AIControllerP2.gd" id="5_56uhg"]
 [ext_resource type="PackedScene" uid="uid://fbavdh45prmq" path="res://rede_2.tscn" id="6_k4au3"]
@@ -550,6 +551,18 @@ sources/6 = SubResource("TileSetAtlasSource_x6qis")
 sources/7 = SubResource("TileSetAtlasSource_p53n0")
 sources/8 = SubResource("TileSetAtlasSource_k5mr3")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6eqy6"]
+size = Vector2(38, 741)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ljq66"]
+size = Vector2(1307, 37)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o6l0x"]
+size = Vector2(47, 743)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ladln"]
+size = Vector2(1302.5, 41)
+
 [node name="Main" type="Node"]
 script = ExtResource("1_qcgbp")
 
@@ -561,6 +574,11 @@ collision_mask = 3
 [node name="AIControllerP1" type="Node2D" parent="Player1"]
 script = ExtResource("1_wyvvw")
 
+[node name="RaycastSensor2D" type="Node2D" parent="Player1"]
+script = ExtResource("4_2l7kb")
+n_rays = 30.0
+ray_length = 500
+
 [node name="Player2" parent="." instance=ExtResource("2_ob0hm")]
 position = Vector2(1024, 360)
 collision_layer = 2
@@ -569,11 +587,15 @@ collision_mask = 3
 [node name="AIControllerP2" type="Node2D" parent="Player2"]
 script = ExtResource("5_56uhg")
 
+[node name="RaycastSensor2D" type="Node2D" parent="Player2"]
+script = ExtResource("4_2l7kb")
+n_rays = 30.0
+ray_length = 500
+
 [node name="Ball" parent="." instance=ExtResource("3_f5h7j")]
 position = Vector2(640, 360)
-collision_layer = 4
-collision_mask = 7
 physics_material_override = SubResource("PhysicsMaterial_m68on")
+contact_monitor = true
 
 [node name="Rede1" parent="." instance=ExtResource("4_c3s7k")]
 position = Vector2(32, 360)
@@ -591,7 +613,7 @@ one_shot = true
 
 [node name="Timer" type="Timer" parent="."]
 process_callback = 0
-wait_time = 180.0
+wait_time = 150.0
 one_shot = true
 
 [node name="Marker1" type="Marker2D" parent="."]
@@ -618,8 +640,30 @@ layer_0/tile_data = PackedInt32Array(917504, 6, 0, 917505, 65542, 0, 917506, 131
 
 [node name="Sync" type="Node" parent="."]
 script = ExtResource("11_v22tr")
-speed_up = 100.0
+speed_up = 8.0
+onnx_model_path = "model.onnx"
 
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(9, 360.5)
+shape = SubResource("RectangleShape2D_6eqy6")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(643.5, 8.5)
+shape = SubResource("RectangleShape2D_ljq66")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1272.5, 362.5)
+shape = SubResource("RectangleShape2D_o6l0x")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(641.75, 712.5)
+shape = SubResource("RectangleShape2D_ladln")
+
+[connection signal="borda_entrou" from="." to="Player1" method="_on_main_borda_entrou"]
+[connection signal="borda_entrou" from="." to="Player2" method="_on_main_borda_entrou"]
 [connection signal="fim" from="." to="Player1" method="_on_main_fim"]
 [connection signal="fim" from="." to="Player2" method="_on_main_fim"]
 [connection signal="timeout" from="." to="Player1" method="_on_main_timeout"]
@@ -632,3 +676,4 @@ speed_up = 100.0
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

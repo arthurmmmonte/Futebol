@@ -6,6 +6,8 @@ signal ball_hit
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
+	set_deferred("monitoring", true)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -34,7 +36,8 @@ func start(pos):
 	
 	call_deferred("set", "freeze", false)
 
-
-func _on_body_entered(body):
-	if(body.name == "Player1" or body.name == "Player2"):
-		ball_hit.emit()
+func _on_area_2d_body_entered(body):
+	print("Chutou: ", body.name)  # Debugging message
+	if body.name == "Player1" or body.name == "Player2":
+		print("Ball hit by: ", body.name)
+		ball_hit.emit()  # Emit signal if player touches the ball
